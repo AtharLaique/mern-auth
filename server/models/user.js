@@ -32,5 +32,15 @@ const UserSchema=mongoose.Schema({
 },{timestamps:true})
 
 //virtual fileds 
-
+UserSchema.virtual('password')
+.set(function(password){
+    //We will use simple function because we want to use this
+    this._password=password;
+    this.salt=this.makeSalt();
+    this.hashed_password=this.encryptPassword()
+    
+})
+.get(function(){
+    return this.hashed_password;
+})
 //methods
