@@ -44,3 +44,22 @@ UserSchema.virtual('password')
     return this.hashed_password;
 })
 //methods
+UserSchema.methods={
+    authenticate:function(plainText){
+        return this.encryptPassword(plainText) == this.hashed_password;
+    },
+    encryptPassword:function(password){
+        if(!password) return ""
+       try{
+           return crypto.createHmac('sha256',this.salt())
+           .update(password)
+           .digest('hex');
+       }catch{
+           return ''
+       }
+    },
+    makeSalt:function(){
+        return Math.round(new Data().valueOf()* Math.random())+''
+    }
+}
+module.exports=mongoose.model('User' ,UserSchema);
