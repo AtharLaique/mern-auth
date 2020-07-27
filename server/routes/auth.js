@@ -4,7 +4,7 @@ const route=express.Router();
 const {signup} =require('../controller/auth-controller');
 
 //Get
-route.get('/signup',signup)
+route.post('/signup',signup)
 //Post 
 //Del
 //Update
