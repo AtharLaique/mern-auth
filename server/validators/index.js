@@ -2,7 +2,8 @@ const {validationResult}=require('express-validator');
 exports.runValidation=(req,res,next)=>{
     const error=validationResult(req);
     if(!error.isEmpty()){
+        console.log(error)
         res.status(422)
-           .json({error:error[0].array()[0].msg})
+           .json({error:error.errors[0].msg})
     }
 }
