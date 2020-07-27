@@ -1,6 +1,8 @@
 const express=require("express");
 const app=express();
-const port =process.env.port || 3001
+require('dotenv').config()
+const port =process.env.PORT || 3001
+
 //Routes
 const authRoute=require('./routes/auth');
 //Middleware
