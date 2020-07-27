@@ -37,7 +37,7 @@ UserSchema.virtual('password')
     //We will use simple function because we want to use this
     this._password=password;
     this.salt=this.makeSalt();
-    this.hashed_password=this.encryptPassword()
+    this.hashed_password=this.encryptPassword(password)
     
 })
 .get(function(){
@@ -49,9 +49,14 @@ UserSchema.methods={
         return this.encryptPassword(plainText) == this.hashed_password;
     },
     encryptPassword:function(password){
-        if(!password) return ""
+        
+        if(!password){ 
+            return ""
+        }
        try{
-           return crypto.createHmac('sha256',this.salt())
+           console.log(this.salt)
+        console.log(crypto.createHmac('sha256',this.salt.update("I Love you")))
+           return crypto.createHmac('sha256',this.salt)
            .update(password)
            .digest('hex');
        }catch{
@@ -59,7 +64,7 @@ UserSchema.methods={
        }
     },
     makeSalt:function(){
-        return Math.round(new Data().valueOf()* Math.random())+''
+        return Math.round(new Date().valueOf()* Math.random())+''
     }
 }
 module.exports=mongoose.model('User' ,UserSchema);
