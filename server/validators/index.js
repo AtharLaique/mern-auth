@@ -6,4 +6,5 @@ exports.runValidation=(req,res,next)=>{
         res.status(422)
            .json({error:error.errors[0].msg})
     }
+    next();
 }
