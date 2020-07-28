@@ -49,3 +49,8 @@ exports.signup = (req, res) => {
 // make transpoter object OK
 // male mailOptions object OK
 // Send email Ok 
+
+// Acount Activation 
+exports.activateAcount=(req,res)=>{
+    
+}
