@@ -49,13 +49,10 @@ UserSchema.methods={
         return this.encryptPassword(plainText) == this.hashed_password;
     },
     encryptPassword:function(password){
-        
         if(!password){ 
             return ""
         }
        try{
-           console.log(this.salt)
-        console.log(crypto.createHmac('sha256',this.salt.update("I Love you")))
            return crypto.createHmac('sha256',this.salt)
            .update(password)
            .digest('hex');
