@@ -26,8 +26,8 @@ exports.signup = (req, res) => {
       },
     });
     let mailOptions = {
-      from: "a015coder@gmail.com", // TODO: email sender
-      to: email, // TODO: email receiver
+      from: "a015coder@gmail.com",
+      to: email,
       subject: "Acount Activation Link",
       html: ` <p> Please Use The Following Link To Activate Your Acount</p>
     <p> ${process.env.CLIENT_URL}/auth/activate/${token}</p>
