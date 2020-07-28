@@ -7,9 +7,7 @@ const db = require('./utils/db');
 require('dotenv').config();
 
 const port =process.env.PORT || 3001
-// import validator
-const {signupValidatores} =require('./validators/auth-validator');
-const {runValidation}=require('./validators/index');
+
 //Routes
 const authRoute=require('./routes/auth');
 
@@ -22,7 +20,7 @@ if(process.env.NODE_ENV=='development'){
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}))
 //Middleware
-app.use('/api/auth',signupValidatores,runValidation,authRoute);
+app.use('/api/auth',authRoute);
 app.listen(port,()=>{
     console.log(`Server is running on ${port}`)
 })
