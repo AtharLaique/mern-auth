@@ -52,5 +52,31 @@ exports.signup = (req, res) => {
 
 // Acount Activation 
 exports.activateAcount=(req,res)=>{
-    
+    const {token}=req.body;
+
+    if(token)
+    {
+        jwt.verify(token, process.env.JWT_ACOUNT_ACTIVATION,function(err,data){
+            if(err)
+            {
+                return   res.status(401).json({ message: "Token is expired" });
+            }
+            const {name,email ,password}=jwt.decode(token)
+           
+            const newUser=new User({name:name,email:email,password:password})
+                  newUser.save((err,result)=>{
+                      if(err)
+                      {
+                        return res.status(422).json({ message: err }); 
+                      }
+                      res.status(200).json({ message: "Signup Success ! Plase Signin" });
+                  })
+        })
+    }
 }
+// Get Token from body
+// Verify the token 
+// If not valid then token is expired
+// else extract/decode name,email ,password
+// crate user instance 
+// save user with hashed password
