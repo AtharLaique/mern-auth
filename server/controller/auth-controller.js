@@ -1,27 +1,51 @@
 const User = require("../models/user");
-//Signup
+const jwt = require("jsonwebtoken");
+const sgMail = require("@sendgrid/mail");
+const { send } = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID);
+const nodemailer = require("nodemailer");
+require("dotenv").config();
+
+// Signup with email validation
 exports.signup = (req, res) => {
   const { name, email, password } = req.body;
   User.find({ email }).exec((error, data) => {
-    if (error){
-        return res.status(400).json({ msg: error });
+    if (data.length > 0) {
+      return res.status(422).json({ message: "This Email Is Already Exists" });
     }
-    if(data.length > 0){
-        return res.status(422).json({ msg:"This email is already exist" });
-    } 
-    let newUser=new User({name:name,email:email,password:password})
-        newUser.save((error, result)=>{
-            if (error){
-                return res.status(400).json({ msg: error });
-            }
-            return res.status(200).json({ msg:"Signup Success : Please Signin !" });
-        })
-               
+    const token = jwt.sign(
+      { name, email, password },
+      process.env.JWT_ACOUNT_ACTIVATION,
+      { expiresIn: "10m" }
+    );
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "a015coder@gmail.com",
+        pass: process.env.PASSWORD,
+      },
+    });
+    let mailOptions = {
+      from: "a015coder@gmail.com", // TODO: email sender
+      to: email, // TODO: email receiver
+      subject: "Acount Activation Link",
+      html: ` <p> Please Use The Following Link To Activate Your Acount</p>
+    <p> ${process.env.CLIENT_URL}/auth/activate/${token}</p>
+  `,
+    };
+    transporter.sendMail(mailOptions, (err, data) => {
+      if (err) {
+        return console.log(err);
+      }
+      return console.log("Email sent!!!");
+    });
   });
 };
-
 // Get signup para meters OK
 // Check weather email exsit or not OK
-// If exist already then return error OK
-// If not then  ceate user with hashed password OK
-// then save document and return responce 
+// Create jwt token using name , email and password OK
+// Create Template for email OK
+// import nodemailer object OK
+// make transpoter object OK
+// male mailOptions object OK
+// Send email Ok 
