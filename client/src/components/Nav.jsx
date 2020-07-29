@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 const Nav = () => {
   return (
     <div>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <Link class="navbar-brand" to="/">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <Link className="navbar-brand" to="/">
           MERN AUTH
         </Link>
 
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarNav"
@@ -17,28 +17,27 @@ const Nav = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse container" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <Link class="nav-link" to="/">
-                Home <span class="sr-only">(current)</span>
+        <div className="collapse navbar-collapse container" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item active">
+              <Link className="nav-link" to="/">
+                Home <span className="sr-only">(current)</span>
+              </Link>
+            </li>
+            <li className="nav-item active">
+              <Link className="nav-link" to="/signup">
+                Signup <span className="sr-only">(current)</span>
+              </Link>
+            </li>
+            <li className="nav-item active">
+              <Link className="nav-link" to="/login">
+                Login <span className="sr-only">(current)</span>
               </Link>
             </li>
           </ul>
-          <ul class="navbar-nav ml-auto ">
-            <li class="nav-item active">
-              <Link class="nav-link" to="/signup">
-                Signup <span class="sr-only">(current)</span>
-              </Link>
-            </li>
-            <li class="nav-item active">
-              <Link class="nav-link" to="/login">
-                Login <span class="sr-only">(current)</span>
-              </Link>
-            </li>
-          </ul>
+         
         </div>
       </nav>
     </div>
