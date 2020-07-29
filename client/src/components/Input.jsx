@@ -5,11 +5,12 @@ const Input = ({label,type,placeholder,id,name}) => {
     <div class="form-group">
       <label for="exampleInputEmail1">{label}</label>
       <input
-        type={type}
+        type={type || 'text'}
         class="form-control"
-        id={id}
-        name={name}
-        placeholder={placeholder}
+        id={id || "textFiled"}
+        name={name || 'textFiled'}
+        placeholder={placeholder || "Enter Your Text  . . . "}
+     
       />
     </div>
   );
