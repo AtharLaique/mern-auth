@@ -1,16 +1,16 @@
 import React from "react";
 
-const Input = ({label,type,placeholder,id,name}) => {
+const Input = ({label,type,placeholder,id,name,onChangeValue}) => {
   return (
-    <div class="form-group">
-      <label for="exampleInputEmail1">{label}</label>
+    <div className="form-group">
+      <label >{label}</label>
       <input
         type={type || 'text'}
-        class="form-control"
+        className="form-control"
         id={id || "textFiled"}
         name={name || 'textFiled'}
         placeholder={placeholder || "Enter Your Text  . . . "}
-     
+        onChange={onChangeValue}
       />
     </div>
   );
