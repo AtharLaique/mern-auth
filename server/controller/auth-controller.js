@@ -4,8 +4,9 @@ const sgMail = require("@sendgrid/mail");
 const { send } = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID);
 const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 require("dotenv").config();
-
+const func = () => {};
 // Signup with email validation
 exports.signup = (req, res) => {
   const { name, email, password } = req.body;
@@ -48,43 +49,66 @@ exports.signup = (req, res) => {
 // import nodemailer object OK
 // make transpoter object OK
 // male mailOptions object OK
-// Send email Ok 
+// Send email Ok
 
-// Acount Activation 
-exports.activateAcount=(req,res)=>{
-    const {token}=req.body;
+// Acount Activation
+exports.activateAcount = (req, res) => {
+  const { token } = req.body;
 
-    if(token)
-    {
-        jwt.verify(token, process.env.JWT_ACOUNT_ACTIVATION,function(err,data){
-            if(err)
-            {
-                return   res.status(401).json({ message: "Token is expired" });
-            }
-            const {name,email ,password}=jwt.decode(token)
-           
-            const newUser=new User({name:name,email:email,password:password})
-                  newUser.save((err,result)=>{
-                      if(err)
-                      {
-                        return res.status(422).json({ message: err }); 
-                      }
-                      res.status(200).json({ message: "Signup Success ! Plase Signin" });
-                  })
-        })
-    }
-}
+  if (token) {
+    jwt.verify(token, process.env.JWT_ACOUNT_ACTIVATION, function (err, data) {
+      if (err) {
+        return res.status(401).json({ message: "Token is expired" });
+      }
+      const { name, email, password } = jwt.decode(token);
+
+      const newUser = new User({
+        name: name,
+        email: email,
+        password: password,
+      });
+      newUser.save((err, result) => {
+        if (err) {
+          return res.status(422).json({ message: err });
+        }
+        res.status(200).json({ message: "Signup Success ! Plase Signin" });
+      });
+    });
+  }
+};
 // Get Token from body
-// Verify the token 
+// Verify the token
 // If not valid then token is expired
 // else extract/decode name,email ,password
-// crate user instance 
+// crate user instance
 // save user with hashed password
 
-//SignIn 
-exports.signin=(req,res)=>{
-  const {email,password}=req.body;
-  res.status(200).json({email,password})
-  
-}
-// Fetch email and password from body
+//SignIn
+exports.signin = (req, res) => {
+  const { email, password } = req.body;
+  User.find({ email: email }).exec((err, user) => {
+    if (err || user.length == 0) {
+      return res
+        .status(422)
+        .json({ message: "This email is not exist. Please Signup" });
+    }
+    if (!user[0].authenticate(password)) {
+      return res.status(400).json({ message: "Password is Incorrect" });
+    }
+    const token = jwt.sign({ _id: user[0]._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+    const { _id, name, email, role } = user[0];
+    return res.status(200).json({
+      token,
+      user: { _id, name, email, role },
+    });
+  });
+};
+// Fetch email and password from body OK
+// Putt validation on email and password OK
+// Check is email exist in db OK
+// If not exist then return This email is not exist OK
+// If exist then compare password with hashing OK
+// If password match then create token with expiry OK 
+// Send back to client OK

@@ -11,3 +11,11 @@ exports.signupValidatores=[
     .isLength({min:6})
     .withMessage("password must be 6 chracter long")
 ]
+exports.signinValidatores=[
+    check('email')
+    .isEmail()
+    .withMessage("Enter A Valid Email"),
+    check('password')
+    .isLength({min:6})
+    .withMessage("Password Must Be 6 Chracter Long")
+]
