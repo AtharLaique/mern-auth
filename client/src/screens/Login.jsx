@@ -1,15 +1,21 @@
-import React from "react";
+import React ,{useState}from "react";
 import Layout from "../components/Layout";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import CenterGrid from "../components/CenterGrid";
 
 const Login = () => {
+  const [values,setValues]=useState({email:'',password:''})
+  const onChangeValue=(e)=>{
+   setValues({[e.target.name]:e.target.value})
+  }
+ const  onSubmitForm = () => {
+    console.log(values);
+  };
   return (
     <Layout>
-      <div class="row">
-        <div className="col-sm-3 col-md-4 col-lg-4"></div>
-        <div className="col-sm-6 col-md-4 col-lg-4">
+      <CenterGrid>
             <Card title="Login">
                 <Input 
                 label="Email"
@@ -17,6 +23,8 @@ const Login = () => {
                 id="email"
                 name="email"
                 type="email"
+                value={values.email}
+                onChangeValue={onChangeValue}
                 />
                  <Input 
                 label="Password"
@@ -24,12 +32,13 @@ const Login = () => {
                 id="password"
                 name="password"
                 type="password"
+                value={values.password}
+                onChangeValue={onChangeValue}
                 />
-                    <Button title="Go!"/>
+                    <Button title="Go!"
+                    onClick={onSubmitForm}/>
             </Card>
-        </div>
-        <div className="col-sm-3 col-md-4 col-lg-4"></div>
-      </div>
+      </CenterGrid>
     </Layout>
   );
 };

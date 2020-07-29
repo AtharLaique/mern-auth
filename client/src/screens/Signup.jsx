@@ -1,42 +1,64 @@
-import React from "react";
+import React, { Component } from "react";
 import Layout from "../components/Layout";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
-const Signup = () => {
-  return (
-    <Layout>
-      <div class="row">
-        <div className="col-sm-3 col-md-4 col-lg-4"></div>
-        <div className="col-sm-6 col-md-4 col-lg-4">
+import CenterGrid from "../components/CenterGrid";
+
+class Signup extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
+    };
+  }
+  onChangeValue = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+  onSubmitForm = () => {
+    console.log(this.state);
+  };
+  render() {
+    let { name, email, password } = this.state;
+    return (
+      <Layout>
+        <CenterGrid>
           <Card title="Signup">
-          <Input 
-                label="Name"
-                placeholder="Enter Your Name ..."
-                id="name"
-                name="name"
-                type="name"
-                />
-          <Input 
-                label="Email"
-                placeholder="Enter Your Email ..."
-                id="email"
-                name="email"
-                type="email"
-                />
-                 <Input 
-                label="Password"
-                placeholder="Enter Your Password ..."
-                id="password"
-                name="password"
-                type="password"
-                />
-                <Button title="Create Acount !"/>
+            <Input
+              label="Name"
+              placeholder="Enter Your Name ..."
+              id="name"
+              name="name"
+              type="name"
+              value={name}
+              onChangeValue={this.onChangeValue}
+            />
+            <Input
+              label="Email"
+              placeholder="Enter Your Email ..."
+              id="email"
+              name="email"
+              type="email"
+              value={email}
+              onChangeValue={this.onChangeValue}
+            />
+            <Input
+              label="Password"
+              placeholder="Enter Your Password ..."
+              id="password"
+              name="password"
+              type="password"
+              value={password}
+              onChangeValue={this.onChangeValue}
+            />
+              <Button title="Create Your Acount !"  onClick={this.onSubmitForm}/>
           </Card>
-        </div>
-        <div className="col-sm-3 col-md-4 col-lg-4"></div>
-      </div>
-    </Layout>
-  );
-};
+        </CenterGrid>
+      </Layout>
+    );
+  }
+}
+
 export default Signup;
