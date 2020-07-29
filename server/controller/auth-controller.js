@@ -80,3 +80,11 @@ exports.activateAcount=(req,res)=>{
 // else extract/decode name,email ,password
 // crate user instance 
 // save user with hashed password
+
+//SignIn 
+exports.signin=(req,res)=>{
+  const {email,password}=req.body;
+  res.status(200).json({email,password})
+  
+}
+// Fetch email and password from body

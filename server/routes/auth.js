@@ -5,12 +5,15 @@ const route=express.Router();
 const {signupValidatores} =require('../validators/auth-validator');
 const {runValidation}=require('../validators/index');
 //Controller
-const {signup ,activateAcount} =require('../controller/auth-controller');
+const {signup ,activateAcount,signin} =require('../controller/auth-controller');
 
 //Get
+
+//Post 
 route.post('/signup',signupValidatores,runValidation,signup)
 route.post('/activate',activateAcount)
-//Post 
+route.post('/signin',signin)
+
 //Del
 //Update
 module.exports=route;
