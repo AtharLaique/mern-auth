@@ -38,7 +38,7 @@ exports.signup = (req, res) => {
       if (err) {
         return console.log(err);
       }
-      return console.log("Email sent!!!");
+      return res.status(200).json({message:'Email is sent'})
     });
   });
 };

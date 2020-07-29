@@ -4,6 +4,7 @@ import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import CenterGrid from "../components/CenterGrid";
+import axios from 'axios';
 
 class Signup extends Component {
   constructor(props) {
@@ -18,8 +19,19 @@ class Signup extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmitForm = () => {
-    console.log(this.state);
-  };
+    const { name, email, password } = this.state;
+    axios({
+      method: 'post',
+      url: `${process.env.REACT_APP_API}auth/signup`,
+      data: {name,email,password}
+    }).then(responce=>{
+      console.log(responce)
+    })
+    .catch(error=>{
+      console.log("catch is called")
+      console.log(error.responce)
+    })
+   };
   render() {
     let { name, email, password } = this.state;
     return (
