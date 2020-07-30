@@ -6,13 +6,15 @@ sgMail.setApiKey(process.env.SENDGRID);
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 require("dotenv").config();
-const func = () => {};
 // Signup with email validation
 exports.signup = (req, res) => {
   const { name, email, password } = req.body;
   User.find({ email }).exec((error, data) => {
     if (data.length > 0) {
-      return res.status(422).json({ message: "This Email Is Already Exists" });
+      return res.send({
+        status:422,
+        message:'This Email Is Already Exist'
+    })
     }
     const token = jwt.sign(
       { name, email, password },
@@ -38,7 +40,10 @@ exports.signup = (req, res) => {
       if (err) {
         return console.log(err);
       }
-      return res.status(200).json({message:'Email is sent'})
+      return res.send({
+        status:200,
+        message:'Email is sent to your acount !'
+    })
     });
   });
 };

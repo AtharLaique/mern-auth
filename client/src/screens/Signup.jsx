@@ -4,7 +4,8 @@ import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import CenterGrid from "../components/CenterGrid";
-import axios from 'axios';
+import Alert from "../components/Alert";
+import axios from "axios";
 
 class Signup extends Component {
   constructor(props) {
@@ -13,30 +14,48 @@ class Signup extends Component {
       name: "",
       email: "",
       password: "",
+      error: false,
+      message: "",
+      type: "",
     };
   }
   onChangeValue = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
   onSubmitForm = () => {
+    this.setState({error:false})
     const { name, email, password } = this.state;
     axios({
-      method: 'post',
-      url: `${process.env.REACT_APP_API}auth/signup`,
-      data: {name,email,password}
-    }).then(responce=>{
-      console.log(responce)
+      method: "post",
+      url: `http://localhost:8000/api/auth/signup`,
+      data: { name, email, password },
     })
-    .catch(error=>{
-      console.log("catch is called")
-      console.log(error.responce)
-    })
-   };
+      .then((responce) => {
+        let res = responce.data;
+        res.status==200?this.setState({
+          name:null,
+          email:null,
+          password:null,
+          message: res.message,
+          type:  "success" ,
+          error:true
+        }):this.setState({
+          message: res.message,
+          type: "danger",
+          error:true
+        })
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   render() {
-    let { name, email, password } = this.state;
+    let { name, email, password, error, message, type } = this.state;
     return (
       <Layout>
         <CenterGrid>
+          {error ? <Alert message={message} type={type} /> : null}
           <Card title="Signup">
             <Input
               label="Name"
@@ -65,7 +84,7 @@ class Signup extends Component {
               value={password}
               onChangeValue={this.onChangeValue}
             />
-              <Button title="Create Your Acount !"  onClick={this.onSubmitForm}/>
+            <Button title="Create Your Acount !" onClick={this.onSubmitForm} />
           </Card>
         </CenterGrid>
       </Layout>
