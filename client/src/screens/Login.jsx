@@ -1,12 +1,15 @@
-import React ,{useState ,Component}from "react";
+import React ,{Component}from "react";
 import Layout from "../components/Layout";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import CenterGrid from "../components/CenterGrid";
 import axios from 'axios';
+import { connect } from 'react-redux';
+import {auth} from '../redux/actions/auth';
 
 class Login extends Component {
+
   constructor(props) {
     super(props)
     this.state = {
@@ -18,12 +21,13 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value})
   }
   onSubmitForm=()=>{
-    const{email,password}=this.state;
 
+    const{email,password}=this.state;
     axios.post("http://localhost:8000/api/auth/signin",{email,password})
         .then(res=>{
           const {user}=res.data;
           localStorage.setItem("_user",JSON.stringify(user))
+          this.props.auth(user)
         })
   }
  render(){
@@ -59,4 +63,7 @@ class Login extends Component {
  }
 
 };
-export default Login;
+const mapStateToProps=(state)=>({
+  auth:state.auth
+})     
+export default connect(mapStateToProps,{auth}) (Login);
