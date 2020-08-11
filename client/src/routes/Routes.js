@@ -5,15 +5,15 @@ import App from '../App';
 import Signup from "../screens/Signup";
 import Login from "../screens/Login";
 import Activate from "../screens/Activate";
-import PrivateRoute from './PrivateRoutes';
+import {Home,Auth} from './PrivateRoutes';
 const Routes = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <PrivateRoute exact path="/" component={App} />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/activate/:token" component={Activate} />
+        <Home exact path="/" component={App} />
+        <Auth path="/login" component={Login} />
+        <Auth path="/signup" component={Signup} />
+        <Auth path="/activate/:token" component={Activate} />
       </Switch>
     </BrowserRouter>
   );
