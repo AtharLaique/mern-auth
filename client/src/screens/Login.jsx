@@ -1,18 +1,33 @@
-import React ,{useState}from "react";
+import React ,{useState ,Component}from "react";
 import Layout from "../components/Layout";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import CenterGrid from "../components/CenterGrid";
+import axios from 'axios';
 
-const Login = () => {
-  const [values,setValues]=useState({email:'',password:''})
-  const onChangeValue=(e)=>{
-   setValues({[e.target.name]:e.target.value})
+class Login extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+       email:'',
+       password:''
+    }
   }
- const  onSubmitForm = () => {
-    console.log(values);
-  };
+ onChangeValue=(e)=>{
+    this.setState({ [e.target.name]: e.target.value})
+  }
+  onSubmitForm=()=>{
+    const{email,password}=this.state;
+
+    axios.post("http://localhost:8000/api/auth/signin",{email,password})
+        .then(res=>{
+          const {user}=res.data;
+          localStorage.setItem("_user",JSON.stringify(user))
+        })
+  }
+ render(){
+   const{email,password}=this.state;
   return (
     <Layout>
       <CenterGrid>
@@ -23,8 +38,8 @@ const Login = () => {
                 id="email"
                 name="email"
                 type="email"
-                value={values.email}
-                onChangeValue={onChangeValue}
+                value={email}
+                onChangeValue={this.onChangeValue}
                 />
                  <Input 
                 label="Password"
@@ -32,14 +47,16 @@ const Login = () => {
                 id="password"
                 name="password"
                 type="password"
-                value={values.password}
-                onChangeValue={onChangeValue}
+                value={password}
+                onChangeValue={this.onChangeValue}
                 />
                     <Button title="Go!"
-                    onClick={onSubmitForm}/>
+                    onClick={this.onSubmitForm}/>
             </Card>
       </CenterGrid>
     </Layout>
   );
+ }
+
 };
 export default Login;

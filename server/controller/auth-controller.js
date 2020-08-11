@@ -33,7 +33,7 @@ exports.signup = (req, res) => {
       to: email,
       subject: "Acount Activation Link",
       html: ` <p> Please Use The Following Link To Activate Your Acount</p>
-    <p> ${process.env.CLIENT_URL}/auth/activate/${token}</p>
+    <p> ${process.env.CLIENT_URL}/activate/${token}</p>
   `,
     };
     transporter.sendMail(mailOptions, (err, data) => {
@@ -59,11 +59,10 @@ exports.signup = (req, res) => {
 // Acount Activation
 exports.activateAcount = (req, res) => {
   const { token } = req.body;
-
   if (token) {
     jwt.verify(token, process.env.JWT_ACOUNT_ACTIVATION, function (err, data) {
       if (err) {
-        return res.status(401).json({ message: "Token is expired" });
+        return res.json({status:422, message: "Token is expired" });
       }
       const { name, email, password } = jwt.decode(token);
 
@@ -74,9 +73,9 @@ exports.activateAcount = (req, res) => {
       });
       newUser.save((err, result) => {
         if (err) {
-          return res.status(422).json({ message: err });
+          return res.json({ status:401,message: err });
         }
-        res.status(200).json({ message: "Signup Success ! Plase Signin" });
+        res.json({status:200, message: "Signup Success ! Plase Signin" });
       });
     });
   }
@@ -94,19 +93,17 @@ exports.signin = (req, res) => {
   User.find({ email: email }).exec((err, user) => {
     if (err || user.length == 0) {
       return res
-        .status(422)
-        .json({ message: "This email is not exist. Please Signup" });
+        .json({status:422, message: "This email is not exist. Please Signup" });
     }
     if (!user[0].authenticate(password)) {
-      return res.status(400).json({ message: "Password is Incorrect" });
+      return res.json({status:400, message: "Password is Incorrect" });
     }
     const token = jwt.sign({ _id: user[0]._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
     const { _id, name, email, role } = user[0];
-    return res.status(200).json({
-      token,
-      user: { _id, name, email, role },
+    return res.json({status:200,
+      user: { _id, name, email, role ,token}
     });
   });
 };
